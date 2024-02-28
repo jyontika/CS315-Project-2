@@ -5,9 +5,7 @@ import re
 import json
 import sys
 
-"""
-on console, run python parse_html.py
-"""
+
 def extract_vid_info(video_file):
     """
     param: .html video_file
