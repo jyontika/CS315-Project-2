@@ -2,9 +2,9 @@
 
 ### How to Run, Input, Output
 #### Input, Output
-Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from
-Our output will is ```videos_info.csv```, a .csv file with the extracted information.
-These files are in this repo, from the test runs. 
+Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from <br>
+Our output will is ```videos_info.csv```, a .csv file with the extracted information. <br>
+These files are in this repo, from the test runs. <br>
 
 #### How to Run
 ```
