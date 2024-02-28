@@ -1,16 +1,16 @@
 # CS315-Project-2
+This file can be found as a jupyter notebook in ScraperTutorial.ipynb in this repo.
 
 Explanation of TikTok Scraper Code saved in ```TikTokScraper.py```
 
-This time, I tried to use seleniumbase's api more. <br>
-Since we just want to scrape video info, we only have to manually log in once at the start of the code. I tried using guest mode to login, but it won't let me see the comment section so we'll have to log in ourselves. 
+Since we just want to scrape video info this time, we only have to manually log in once at the start of the code. I tried using guest mode to login, but it won't let me see the comment section so we'll have to log in ourselves. 
 
 ```TikTokScraper.py``` info:
-- unlike proj1 where we had to interact with the For You page, this time we are just scraping video info. 
-- Thus I used Seleniumbase's ```get_beautiful_soup()``` function to scrape the whole page and save it.
+- unlike proj1 where we had to interact with the For You page, just scrape video info.
+- Thus we use Seleniumbase's ```get_beautiful_soup()``` function to scrape the whole page and save it.
 - run the Testing file:
 ```
-pytest TikTokScraper.py --html="report_test.html"
+pytest -s TikTokScraper.py --html="report_test.html"
 ```
 -  when you run this code, a new folder is made with the current time as the name. 
 - Each vido page is scraped and saved in this ```current_time``` folder as ```vid_index.html```, where the index is the index of the video in the ```video_list```. ex) vid_2.html is the 2nd video in the video list
@@ -82,6 +82,7 @@ playCount = data['playCount']
 collectCount = data['collectCount']
 print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count, "\nplay:", playCount, "\ncollect:", collectCount)
 ```
+This is the output we get:
 
     
     like: 45500 
@@ -101,5 +102,5 @@ Now we **generalize** this code to loop through all the ```.html``` files. We do
 known issues: <br>
 1. close popup on bottom right
 3. Even though we are logged in, TikTok **asks you to solve Captcha to proceed randomly**, so pay attention to the console message!
-![captcha](./assets/captcha.png)
-![console message](./assets/console_m_captcha.png)
+![alt text](./assets/captcha.png)
+![alt text](./assets/console_m_captcha.png)
