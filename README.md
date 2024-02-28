@@ -1,26 +1,57 @@
 # CS315-Project-2
-This file can be found as a jupyter notebook in ScraperTutorial.ipynb in this repo.
 
-Explanation of TikTok Scraper Code saved in ```TikTokScraper.py```
+### How to Run, Input, Output
+#### Input, Output
+Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from
+Our output will is ```videos_info.csv```, a .csv file with the extracted information.
+These files are in this repo, from the test runs. 
+
+#### How to Run
+```
+pytest -s TikTokScraper.py --html="report_test.html"
+```
+After this do:
+```
+python parse_html.py
+```
+
+### Code/Folder Explanation
+
+#### ```TikTokScraper.py```
 
 Since we just want to scrape video info this time, we only have to manually log in once at the start of the code. I tried using guest mode to login, but it won't let me see the comment section so we'll have to log in ourselves. 
 
 ```TikTokScraper.py``` info:
-- unlike proj1 where we had to interact with the For You page, just scrape video info.
+- unlike proj1 where we had to interact with the For You page, we just scrape video info.
 - Thus we use Seleniumbase's ```get_beautiful_soup()``` function to scrape the whole page and save it.
 - run the Testing file:
 ```
 pytest -s TikTokScraper.py --html="report_test.html"
 ```
 -  when you run this code, a new folder is made with the current time as the name. 
-- Each vido page is scraped and saved in this ```current_time``` folder as ```vid_index.html```, where the index is the index of the video in the ```video_list```. ex) vid_2.html is the 2nd video in the video list
+- Each video page is scraped and saved in this ```current_time``` folder as ```vid_index.html```, where the index is the index of the video in the ```video_list```. ex) vid_2.html is the 2nd video in the video list
 
-Great, now we have ```.html``` files with all the information, now we just have to extract the parts we want!
-
-After we scrape each video page and save it into each num.html file, we want to extract info out of the files now.  <br>
-We start with something simple: given one video html page, extract:
+Great, now we have ```.html``` files with all the information, now we just have to extract the parts we want. This code is in  ```parse_html.py```
+####  ```parse_html.py```
+we extract:
 1.  num of likes, shares, saves,comments, plays(new!) (in video box)
 2.  username, nickname, description, music  (below video box)
+3.  first batch of comments
+
+### Troubleshooting <br>
+known issues: <br>
+1. close popup on bottom right
+2. Even though we are logged in, TikTok **asks you to solve Captcha to proceed randomly**, so pay attention to the console message!
+![captcha](./assets/captcha.png)
+![console message](./assets/console_m_captcha.png)
+
+#### Detailed Code Explanation: 
+This section is from ```ScraperTutorial.ipynb``` in this repo, which is a simplified version of ```parse_html.py```
+
+After we scrape each video page and save it into each num.html file, we want to extract info out of the files now.  <br>
+We start with something simple: given ***one video html page***, extract:
+1.  num of likes, shares, saves,comments, plays
+2.  username, nickname, description, music
 3.  first batch of comments
 
 We will do this using ```BeautifulSoup```
@@ -48,7 +79,7 @@ with open('./02-28-01-04-38/vid_0.html', 'r') as f:
 ```python
 print("url:",url,"\nusername:", username,"\nnickname:", nickname, "\ndescription:", description,"\nmusic:",music)
 ```
-
+    #OUTPUT
     url: https://www.tiktok.com/@pinkydollreal/video/7311845651862637829 
     username: pinkydollreal 
     nickname: Pinkydoll 
@@ -64,7 +95,7 @@ for comment in comment_div:
     comments.append(comment.text)
 print(comments)
 ```
-
+    #OUTPUT
     ['Imagine seeing pinky doll in the mall 😱', 'the fact this is laval', 'THEY NEED HER IN GTA 6-', 'I SAW THEM😭', 'Carrefour Laval spotted', 'iceeeee cream soooo goooddd', 'the random back flip 😭😭', 'He did a whole back flip lol', 'oh noooo not in public right toooo', '😭 she’s in laval?', 'This is a w collab', 'What is laval 🤔', 'Who came from Alibaba video', 'UMM CARREFOUR HOW DID I MISS THIS', 'I came here from the santa juju walk rizz vid', 'BYE NOT CARREFOUR', '@ₘᵢₗₑₙₐ 🤍 not this too', '@kiki🔛🔝 PINKY DOLL AT CF', '@breakinMcqueen95 @💗현진 아내💗 @Estriper literally at cf laval', 'Slay', '@Jaya⸆⸉ it’s so preppy in here!', 'YES YES YES', '@Gabriella🩷 at c4 agaib😔', 'I swear I love me some pinkydoll 🫶🫶', '@The best y/n BAHAHAHA', 'Is that car four Laval ?', 'like how Kris Kross did dat back flip', 'OMG YHU SAW ALIBABA I KNEW HE SAW YHU ON HIS VIDEO 😭😭', "😳 I'm a pray for you sis", 'I was like yassss girl walk that walk', '😭 this was more npc then an npc is', 'Roblox 🙂', 'the flip was dope 😅', 'I sweater I have seen him on snapchat shorts', 'HES SO FRICKEN TINY', 'I love it!', '@𝓗’ HEKP C CAREFOUR', 'Snapped', 'how are malls still in business?', 'You are so amazing']
 
 
@@ -82,9 +113,8 @@ playCount = data['playCount']
 collectCount = data['collectCount']
 print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count, "\nplay:", playCount, "\ncollect:", collectCount)
 ```
-This is the output we get:
 
-    
+    #OUTPUT
     like: 45500 
     share: 1205 
     comment: 744 
@@ -92,15 +122,8 @@ This is the output we get:
     collect: 2911
 
 
-    /var/folders/6y/w5dznchj3w9cyjt81v33hf1c0000gn/T/ipykernel_5366/1639323669.py:3: DeprecationWarning: The 'text' argument to find()-type methods is deprecated. Use 'string' instead.
-      script_tag = soup.find('script', text=re.compile('stats'))
-
 
 Now we **generalize** this code to loop through all the ```.html``` files. We do this in  ```parse_html.py```
 
-<h3>Troubleshooting <br> </h3>
-known issues: <br>
-1. close popup on bottom right
-3. Even though we are logged in, TikTok **asks you to solve Captcha to proceed randomly**, so pay attention to the console message!
-![alt text](./assets/captcha.png)
-![alt text](./assets/console_m_captcha.png)
+
+If you have any questions/found new errors, ask Johanna :)
