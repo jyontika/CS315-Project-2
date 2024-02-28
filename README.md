@@ -3,17 +3,19 @@
 ### How to Run, Input, Output
 #### Input, Output
 Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from <br>
-Our output will is ```videos_info.csv```, a .csv file with the extracted information. <br>
-These files are in this repo, from the test runs. <br>
+Our output will be ```videos_info.csv```, a .csv file with the extracted information. <br>
+These files are in this repo, from the test runs. ```videos_info.csv``` for the test I ran on 1:48:38am on 02/28 is in the ```02-28-01-04-38``` folder<br>
 
 #### How to Run
+1.
 ```
 pytest -s TikTokScraper.py --html="report_test.html"
 ```
-After this do:
+2.
 ```
-python parse_html.py
+python parse_html.py "02-28-01-04-38" #replace "02-28-01-04-38" with your folder(date) created from 1.
 ```
+
 
 ### Code/Folder Explanation
 

@@ -1,6 +1,9 @@
 from bs4 import BeautifulSoup as BS
 import pandas as pd
 import os
+import re
+import json
+import sys
 
 """
 on console, run python parse_html.py
@@ -8,7 +11,7 @@ on console, run python parse_html.py
 def extract_vid_info(video_file):
     """
     param: .html video_file
-    return: extracted username, nickname, description, comments in one video file
+    return: extracted username, nickname, description, counts (like,share,comment,play,collect), comments in one video file
     """
     with open(video_file, 'r') as f:
         print(video_file)
@@ -24,34 +27,48 @@ def extract_vid_info(video_file):
 
         #print("username:", username,"\nnickname:", nickname, "\ndescription:", description,"\nmusic:",music)
 
+        script_tag = soup.find('script', text=re.compile('stats'))
+        script_content = script_tag.string 
+        data = json.loads(script_content)["__DEFAULT_SCOPE__"]['webapp.video-detail']['itemInfo']['itemStruct']["stats"] #json to python dict, and keep looking
+        like_count = data['diggCount']
+        share_count = data['shareCount']
+        comment_count = data['commentCount']
+        play_count = data['playCount']
+        collect_count = data['collectCount']
+        #print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count, "\nplay:", play_count, "\ncollect:", collect_count)
+
         comment_div = soup.find_all("p", {"class": "css-xm2h10-PCommentText e1g2efjf6"})
         comments = []
         for comment in comment_div:
             comments.append(comment.text)
-        #print(comments)
 
         f.close()
 
-    return url, username, nickname, description, music, comments
+    return url, username, nickname, description, music, like_count, share_count, comment_count, play_count, collect_count, comments
     
 
 
-def all_videos_info(video_files):
+def all_videos_info(video_files,data_folder):
     """
     param: list of video_files saved by TikTokScraper.py
     return: dataframe with all video_info
     """
-    infos = {'url':[],'username':[],'nickname':[],'description':[], 'music':[], 'comments':[]}
+    infos = {'url':[],'username':[],'nickname':[],'description':[], 'music':[], 'like_count':[], 'share_count':[], 'comment_count':[], 'play_count':[], 'collect_count':[], 'comments':[]}
     for vid in video_files:
-        url, username, nickname, description, music, comments = extract_vid_info(vid)
+        url, username, nickname, description, music, like_count, share_count, comment_count, play_count, collect_count, comments = extract_vid_info(vid)
         infos['url'].append(url)
         infos['username'].append(username)
         infos['nickname'].append(nickname)
         infos['description'].append(description)
         infos['music'].append(music)
+        infos['like_count'].append(like_count)
+        infos['share_count'].append(share_count)
+        infos['comment_count'].append(comment_count)
+        infos['play_count'].append(play_count)
+        infos['collect_count'].append(collect_count)
         infos['comments'].append(comments)
     df = pd.DataFrame(infos)
-    df.to_csv('videos_info.csv')
+    df.to_csv(f'./{data_folder}/videos_info.csv')
     return df
 
 def get_html_list(pathName):
@@ -68,8 +85,9 @@ def get_html_list(pathName):
 
 
 def main():
-    all_vid_files = get_html_list(os.getcwd())
-    all_videos_info(all_vid_files)
+    data_folder = sys.argv[1]
+    all_vid_files = get_html_list(data_folder)
+    all_videos_info(all_vid_files,data_folder)
 
 if __name__ == "__main__":
     main()
