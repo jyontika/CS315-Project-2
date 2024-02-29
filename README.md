@@ -1,5 +1,6 @@
 # CS315-Project-2
 
+Please read the troubleshooting section for conda environment setup.
 ### How to Run, Input, Output
 #### Input, Output
 Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from <br>
@@ -46,6 +47,19 @@ known issues: <br>
 2. Even though we are logged in, TikTok **asks you to solve Captcha to proceed randomly**, so pay attention to the console message!
 ![captcha](./assets/captcha.png)
 ![console message](./assets/console_m_captcha.png)
+3. Setting up the environment:
+Assumes you already have conda installed.
+The conda environment used is in ```environment.yml```
+Navigate into the cloned folder (this one).
+```
+conda env create -f environment.yml 
+```
+```
+conda activate proj2
+```
+Now you should see something like this:
+![env](./assets/env.png)
+
 
 #### Detailed Code Explanation: 
 This section is from ```ScraperTutorial.ipynb``` in this repo, which is a simplified version of ```parse_html.py```
@@ -126,6 +140,5 @@ print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count,
 
 
 Now we **generalize** this code to loop through all the ```.html``` files. We do this in  ```parse_html.py```
-
 
 If you have any questions/found new errors, ask Johanna :)
