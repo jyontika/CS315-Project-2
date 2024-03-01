@@ -49,10 +49,10 @@ known issues: <br>
 ![console message](./assets/console_m_captcha.png)
 3. Setting up the environment:
 Assumes you already have conda installed.
-The conda environment used is in ```environment.yml```
+The conda environment used is in ```environment.yaml```
 Navigate into the cloned folder (this one).
 ```
-conda env create -f environment.yml 
+conda env create -f environment.yaml 
 ```
 ```
 conda activate proj2
@@ -61,7 +61,7 @@ Now you should see something like this:
 ![env](./assets/env.png)
 
 
-#### Detailed Code Explanation: 
+### Detailed Code Explanation: 
 This section is from ```ScraperTutorial.ipynb``` in this repo, which is a simplified version of ```parse_html.py```
 
 After we scrape each video page and save it into each num.html file, we want to extract info out of the files now.  <br>
