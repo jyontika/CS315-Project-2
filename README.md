@@ -2,6 +2,7 @@
 Please read the troubleshooting section for conda environment setup.
 #### Things to fix/consider:
 - video_url.csv from user json file too big: ex) 34414 videos -> batch? randomly pick?
+- missing values in extracted info -- check videos_info.csv in 14110-03-04-11, for example.
 - one video link takes 8 seconds to scrape
 - for test run, captch appeared around video 3 & 70 out of 100 videos
 - if you see "element exception!! Check if CAPTCHA appeared!!" on console, you have 15 seconds to go to the chrome page and solve the captcha.
