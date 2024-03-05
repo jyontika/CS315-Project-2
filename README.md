@@ -1,20 +1,25 @@
 # CS315-Project-2
-
 Please read the troubleshooting section for conda environment setup.
+#### Things to fix/consider:
+- video_url.csv from user json file too big: ex) 34414 videos -> batch? randomly pick?
+- one video link takes 8 seconds to scrape
+- for test run, captch appeared around video 3 & 70 out of 100 videos
+- if you see "element exception!! Check if CAPTCHA appeared!!" on console, you have 15 seconds to go to the chrome page and solve the captcha.
+
 ### How to Run, Input, Output
 #### Input, Output
-Our input is ```video_urls.csv```, a .csv file of video urls that we want to extract information from <br>
+Our input is each ```{video_url}.csv```, a .csv file of video urls that we want to extract information from <br>. In pre-processing folder.
 Our output will be ```videos_info.csv```, a .csv file with the extracted information. <br>
-These files are in this repo, from the test runs. ```videos_info.csv``` for the test I ran on 1:04:38am on 02/28 is in the ```02-28-01-04-38``` folder<br>
+These files are in this repo, from the test runs. ```videos_info.csv``` for the test I ran on 03/24 for url file 14110 is in the ```14110-03-04-11``` folder<br>
 
 #### How to Run
 1.
 ```
-pytest -s TikTokScraper.py --html="report_test.html"
+pytest -s TikTokScraper.py --html="report_test.html" --data="video_urls_14110.csv" #replace the csv file with the one you want to extract information from
 ```
 2.
 ```
-python parse_html.py "02-28-01-04-38" #replace "02-28-01-04-38" with your folder(date) created from 1.
+python parse_html.py "14110-03-04-11 #replace "14110-03-04-11" with your folder(date) created from 1.
 ```
 
 
@@ -80,7 +85,7 @@ import pandas as pd
 
 
 ```python
-with open('./02-28-01-04-38/vid_0.html', 'r') as f:
+with open('./14110-03-04-11/vid_0.html', 'r') as f:
     contents = f.read()
 
     soup = BS(contents, "html.parser")

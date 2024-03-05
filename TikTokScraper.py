@@ -13,18 +13,20 @@ class TestTiktok(BaseCase):
         3. where we scroll down once to get comments
         4. save html file fo each vid
         """
-        current_time = datetime.now().strftime("%m-%d-%H-%M-%S")
-        os.mkdir(current_time)
+        current_time = datetime.now().strftime("%m-%d-%M")
+        target_folder = f"{self.data.split('.')[0].split('_')[-1]}-{current_time}"
+        os.mkdir(target_folder)
 
         self.open('https://www.tiktok.com/')
         time.sleep(30) #manually log in
         #self.click('//*[@id="loginContainer"]/div/div/div[3]/div/div[2]/div/div/div')
         
         vid_list = []
-        with open('video_urls.csv',"r") as file:
+        vid_path = f"./pre-processing/url-csv/{self.data}"
+        with open(vid_path,"r") as file:
             reader = DictReader(file)          
             for row in reader:
-                vid_list.append(row['url'])
+                vid_list.append(row['Video URL'])
 
         print(f"we have {len(vid_list)} videos")
 
@@ -42,18 +44,17 @@ class TestTiktok(BaseCase):
                     self.scroll_to_bottom()
                     soup = self.get_beautiful_soup(source=None)
 
-                with open(f"{current_time}/vid_{i}.html", "w") as file:
+                with open(f"{target_folder}/vid_{i}.html", "w") as file:
                     file.write(str(soup))
             except:
                 #if page x load:
                 try:
-                    self.click('/html/body/div[1]/div[2]/div[2]/div/div[2]/div/div[3]/div[2]/div/div[1]')
-                except NoSuchElementException:
-                    time.sleep(5)
                     self.open(vid)
-                    try:
-                        self.click('//*[@id="main-content-video_detail"]/div/div[2]/div/div[3]/div[2]/div/div[5]')
-                    except NoSuchElementException:
-                            print("no element found, moving on to next vid..")
-                            pass #just move on to next vid
+                    self.scroll_to_bottom()
+                    soup = self.get_beautiful_soup(source=None)
+                    with open(f"{target_folder}/vid_{i}.html", "w") as file:
+                        file.write(str(soup))
+                except NoSuchElementException:
+                    print("no element found, moving on to next vid..")
+                    pass #just move on to next vid
         
