@@ -57,7 +57,7 @@ def all_videos_info(video_files,data_folder):
     infos = {'vid_num':[], 'url':[],'username':[],'nickname':[],'description':[], 'music':[], 'like_count':[], 'share_count':[], 'comment_count':[], 'play_count':[], 'collect_count':[], 'comments':[]}
     for vid in video_files:
         vid_num, url, username, nickname, description, music, like_count, share_count, comment_count, play_count, collect_count, comments = extract_vid_info(vid)
-        infos['vid_num'].append(url)
+        infos['vid_num'].append(vid_num)
         infos['url'].append(url)
         infos['username'].append(username)
         infos['nickname'].append(nickname)
