@@ -11,22 +11,30 @@ def extract_vid_info(video_file):
     param: .html video_file
     return: extracted username, nickname, description, counts (like,share,comment,play,collect), comments in one video file
     """
-    with open(video_file, 'r') as f:
-        vid_num = video_file.split(".")[0].split("_")[-1]
-        print(video_file,vid_num)
-        contents = f.read()
+    def safe_find(soup, tag, attrs):
+        element = soup.find(tag, attrs)
+        if element:
+            return element.text
+        else:
+            return None
 
+    with open(video_file, 'r') as f:
+        print(video_file)
+        vid_num = video_file.split(".")[0].split("_")[-1]
+
+        contents = f.read()
         soup = BS(contents, "html.parser")
         url, username, nickname, description, music, like_count, share_count, comment_count, play_count, collect_count, comments = None,None,None,None,None,None,None,None,None,None,None
         try:
             url = soup.find("meta", property="og:url")['content']
-            username = soup.find("span", {"class": "css-1c7urt-SpanUniqueId evv7pft1"}).text
-            nickname = soup.find("span", {"class": "css-1xccqfx-SpanNickName e17fzhrb1"}).text
-            description = soup.find("span", {"class": "css-j2a19r-SpanText efbd9f0"}).text
-            music = soup.find("div", {"class": "css-pvx3oa-DivMusicText epjbyn3"}).text
-
-            #print("username:", username,"\nnickname:", nickname, "\ndescription:", description,"\nmusic:",music)
-
+        except:
+            pass
+        username = safe_find(soup, "span", {"class": "css-1c7urt-SpanUniqueId evv7pft1"})
+        nickname = safe_find(soup,"span", {"class": "css-1xccqfx-SpanNickName e17fzhrb1"})
+        description = safe_find(soup, "span", {"class": "css-j2a19r-SpanText efbd9f0"})
+        music = safe_find(soup, "div", {"class": "css-pvx3oa-DivMusicText epjbyn3"})
+        #print("username:", username,"\nnickname:", nickname, "\ndescription:", description,"\nmusic:",music)
+        try:
             script_tag = soup.find('script', text=re.compile('stats'))
             script_content = script_tag.string 
             data = json.loads(script_content)["__DEFAULT_SCOPE__"]['webapp.video-detail']['itemInfo']['itemStruct']["stats"] #json to python dict, and keep looking
@@ -35,14 +43,14 @@ def extract_vid_info(video_file):
             comment_count = data['commentCount']
             play_count = data['playCount']
             collect_count = data['collectCount']
-            #print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count, "\nplay:", play_count, "\ncollect:", collect_count)
-
-            comment_div = soup.find_all("p", {"class": "css-xm2h10-PCommentText e1g2efjf6"})
-            comments = []
-            for comment in comment_div:
-                comments.append(comment.text)
-        except: #page is empty
+        except:
             pass
+        #print("\nlike:",like_count, "\nshare:",share_count, "\ncomment:", comment_count, "\nplay:", play_count, "\ncollect:", collect_count)
+
+        comment_div = soup.find_all("p", {"class": "css-xm2h10-PCommentText e1g2efjf6"})
+        comments = []
+        for comment in comment_div:
+            comments.append(comment.text)
         f.close()
 
     return vid_num, url, username, nickname, description, music, like_count, share_count, comment_count, play_count, collect_count, comments
