@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>Test Report</title>
+    <link href="assets/style.css" rel="stylesheet" type="text/css"/></head>
+  <body onLoad="init()">
+    <script>/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+function toArray(iter) {
+    if (iter === null) {
+        return null;
+    }
+    return Array.prototype.slice.call(iter);
+}
+
+function find(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return elem.querySelector(selector);
+}
+
+function find_all(selector, elem) {
+    if (!elem) {
+        elem = document;
+    }
+    return toArray(elem.querySelectorAll(selector));
+}
+
+function sort_column(elem) {
+    toggle_sort_states(elem);
+    var colIndex = toArray(elem.parentNode.childNodes).indexOf(elem);
+    var key;
+    if (elem.classList.contains('numeric')) {
+        key = key_num;
+    } else if (elem.classList.contains('result')) {
+        key = key_result;
+    } else {
+        key = key_alpha;
+    }
+    sort_table(elem, key(colIndex));
+}
+
+function show_all_extras() {
+    find_all('.col-result').forEach(show_extras);
+}
+
+function hide_all_extras() {
+    find_all('.col-result').forEach(hide_extras);
+}
+
+function show_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.remove("collapsed");
+    expandcollapse.classList.remove("expander");
+    expandcollapse.classList.add("collapser");
+}
+
+function hide_extras(colresult_elem) {
+    var extras = colresult_elem.parentNode.nextElementSibling;
+    var expandcollapse = colresult_elem.firstElementChild;
+    extras.classList.add("collapsed");
+    expandcollapse.classList.remove("collapser");
+    expandcollapse.classList.add("expander");
+}
+
+function show_filters() {
+    var filter_items = document.getElementsByClassName('filter');
+    for (var i = 0; i < filter_items.length; i++)
+        filter_items[i].hidden = false;
+}
+
+function add_collapse() {
+    // Add links for show/hide all
+    var resulttable = find('table#results-table');
+    var showhideall = document.createElement("p");
+    showhideall.innerHTML = '<a href="javascript:show_all_extras()">Show all details</a> / ' +
+                            '<a href="javascript:hide_all_extras()">Hide all details</a>';
+    resulttable.parentElement.insertBefore(showhideall, resulttable);
+
+    // Add show/hide link to each result
+    find_all('.col-result').forEach(function(elem) {
+        var collapsed = get_query_parameter('collapsed') || 'Passed';
+        var extras = elem.parentNode.nextElementSibling;
+        var expandcollapse = document.createElement("span");
+        if (collapsed.includes(elem.innerHTML)) {
+            extras.classList.add("collapsed");
+            expandcollapse.classList.add("expander");
+        } else {
+            expandcollapse.classList.add("collapser");
+        }
+        elem.appendChild(expandcollapse);
+
+        elem.addEventListener("click", function(event) {
+            if (event.currentTarget.parentNode.nextElementSibling.classList.contains("collapsed")) {
+                show_extras(event.currentTarget);
+            } else {
+                hide_extras(event.currentTarget);
+            }
+        });
+    })
+}
+
+function get_query_parameter(name) {
+    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+}
+
+function init () {
+    reset_sort_headers();
+
+    add_collapse();
+
+    show_filters();
+
+    sort_column(find('.initial-sort'));
+
+    find_all('.sortable').forEach(function(elem) {
+        elem.addEventListener("click",
+                              function(event) {
+                                  sort_column(elem);
+                              }, false)
+    });
+
+};
+
+function sort_table(clicked, key_func) {
+    var rows = find_all('.results-table-row');
+    var reversed = !clicked.classList.contains('asc');
+    var sorted_rows = sort(rows, key_func, reversed);
+    /* Whole table is removed here because browsers acts much slower
+     * when appending existing elements.
+     */
+    var thead = document.getElementById("results-table-head");
+    document.getElementById('results-table').remove();
+    var parent = document.createElement("table");
+    parent.id = "results-table";
+    parent.appendChild(thead);
+    sorted_rows.forEach(function(elem) {
+        parent.appendChild(elem);
+    });
+    document.getElementsByTagName("BODY")[0].appendChild(parent);
+}
+
+function sort(items, key_func, reversed) {
+    var sort_array = items.map(function(item, i) {
+        return [key_func(item), i];
+    });
+
+    sort_array.sort(function(a, b) {
+        var key_a = a[0];
+        var key_b = b[0];
+
+        if (key_a == key_b) return 0;
+
+        if (reversed) {
+            return (key_a < key_b ? 1 : -1);
+        } else {
+            return (key_a > key_b ? 1 : -1);
+        }
+    });
+
+    return sort_array.map(function(item) {
+        var index = item[1];
+        return items[index];
+    });
+}
+
+function key_alpha(col_index) {
+    return function(elem) {
+        return elem.childNodes[1].childNodes[col_index].firstChild.data.toLowerCase();
+    };
+}
+
+function key_num(col_index) {
+    return function(elem) {
+        return parseFloat(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function key_result(col_index) {
+    return function(elem) {
+        var strings = ['Error', 'Failed', 'Rerun', 'XFailed', 'XPassed',
+                       'Skipped', 'Passed'];
+        return strings.indexOf(elem.childNodes[1].childNodes[col_index].firstChild.data);
+    };
+}
+
+function reset_sort_headers() {
+    find_all('.sort-icon').forEach(function(elem) {
+        elem.parentNode.removeChild(elem);
+    });
+    find_all('.sortable').forEach(function(elem) {
+        var icon = document.createElement("div");
+        icon.className = "sort-icon";
+        icon.textContent = "vvv";
+        elem.insertBefore(icon, elem.firstChild);
+        elem.classList.remove("desc", "active");
+        elem.classList.add("asc", "inactive");
+    });
+}
+
+function toggle_sort_states(elem) {
+    //if active, toggle between asc and desc
+    if (elem.classList.contains('active')) {
+        elem.classList.toggle('asc');
+        elem.classList.toggle('desc');
+    }
+
+    //if inactive, reset all other functions and add ascending active
+    if (elem.classList.contains('inactive')) {
+        reset_sort_headers();
+        elem.classList.remove('inactive');
+        elem.classList.add('active');
+    }
+}
+
+function is_all_rows_hidden(value) {
+  return value.hidden == false;
+}
+
+function filter_table(elem) {
+    var outcome_att = "data-test-result";
+    var outcome = elem.getAttribute(outcome_att);
+    class_outcome = outcome + " results-table-row";
+    var outcome_rows = document.getElementsByClassName(class_outcome);
+
+    for(var i = 0; i < outcome_rows.length; i++){
+        outcome_rows[i].hidden = !elem.checked;
+    }
+
+    var rows = find_all('.results-table-row').filter(is_all_rows_hidden);
+    var all_rows_hidden = rows.length == 0 ? true : false;
+    var not_found_message = document.getElementById("not-found-message");
+    not_found_message.hidden = !all_rows_hidden;
+}
+</script>
+    <h1>report_test.html</h1>
+    <p>Report generated on 04-Mar-2024 at 19:27:11 by <a href="https://pypi.python.org/pypi/pytest-html">pytest-html</a> v2.0.1</p>
+    <h2>Summary</h2>
+    <p>1 tests ran in 962.95 seconds. </p>
+    <p class="filter" hidden="true">(Un)check the boxes to filter the results.</p><input checked="true" class="filter" data-test-result="passed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="passed">0 passed</span>, <input checked="true" class="filter" data-test-result="skipped" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="skipped">0 skipped</span>, <input checked="true" class="filter" data-test-result="failed" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="failed">1 failed</span>, <input checked="true" class="filter" data-test-result="error" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="error">0 errors</span>, <input checked="true" class="filter" data-test-result="xfailed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xfailed">0 expected failures</span>, <input checked="true" class="filter" data-test-result="xpassed" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="xpassed">0 unexpected passes</span>, <input checked="true" class="filter" data-test-result="rerun" disabled="true" hidden="true" name="filter_checkbox" onChange="filter_table(this)" type="checkbox"/><span class="rerun">0 rerun</span>
+    <h2>Results</h2>
+    <table id="results-table">
+      <thead id="results-table-head">
+        <tr>
+          <th class="sortable result initial-sort" col="result">Result</th>
+          <th class="sortable" col="name">Test</th>
+          <th class="sortable numeric" col="duration">Duration</th>
+          <th>Links</th></tr>
+        <tr hidden="true" id="not-found-message">
+          <th colspan="4">No results found. Try to check the filters</th></tr></thead>
+      <tbody class="failed results-table-row">
+        <tr>
+          <td class="col-result">Failed</td>
+          <td class="col-name">TikTokScraper.py::TestTiktok::test_save_html_page</td>
+          <td class="col-duration">962.18</td>
+          <td class="col-links"></td></tr>
+        <tr>
+          <td class="extra" colspan="4">
+            <div class="log">self = &lt;TikTokScraper.TestTiktok testMethod=test_save_html_page&gt;<br/><br/>    def test_save_html_page(self):<br/>        &quot;&quot;&quot;<br/>        1. log in manually<br/>        2. traverse through the vids in the vid_list<br/>        3. where we scroll down once to get comments<br/>        4. save html file fo each vid<br/>        &quot;&quot;&quot;<br/>        current_time = datetime.now().strftime(&quot;%m-%d-%M&quot;)<br/>        target_folder = f&quot;{self.data.split(&#x27;.&#x27;)[0].split(&#x27;_&#x27;)[-1]}-{current_time}&quot;<br/>        os.mkdir(target_folder)<br/>    <br/>        self.open(&#x27;https://www.tiktok.com/&#x27;)<br/>        time.sleep(30) #manually log in<br/>        #self.click(&#x27;//*[@id=&quot;loginContainer&quot;]/div/div/div[3]/div/div[2]/div/div/div&#x27;)<br/>    <br/>        vid_list = []<br/>        vid_path = f&quot;./pre-processing/url-csv/{self.data}&quot;<br/>        with open(vid_path,&quot;r&quot;) as file:<br/>            reader = DictReader(file)<br/>            for row in reader:<br/>                vid_list.append(row[&#x27;Video URL&#x27;])<br/>    <br/>        print(f&quot;we have {len(vid_list)} videos&quot;)<br/>    <br/>        for i,vid in enumerate(vid_list):<br/>            time.sleep(5)<br/>            self.open(vid)<br/>            try:<br/>                self.scroll_to_bottom()<br/>&gt;               soup = self.get_beautiful_soup(source=None)<br/><br/>TikTokScraper.py:38: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/fixtures/base_case.py:6440: in get_beautiful_soup<br/>    self.wait_for_element_visible(<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/fixtures/base_case.py:8641: in wait_for_element_visible<br/>    return page_actions.wait_for_element_visible(<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/fixtures/page_actions.py:479: in wait_for_element_visible<br/>    element = driver.find_element(by=by, value=selector)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/core/sb_driver.py:20: in find_element<br/>    return self.driver.default_find_element(by=by, value=value)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py:741: in find_element<br/>    return self.execute(Command.FIND_ELEMENT, {&quot;using&quot;: by, &quot;value&quot;: value})[&quot;value&quot;]<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/selenium/webdriver/remote/webdriver.py:345: in execute<br/>    response = self.command_executor.execute(driver_command, params)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/selenium/webdriver/remote/remote_connection.py:302: in execute<br/>    return self._request(command_info[0], url, body=data)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/selenium/webdriver/remote/remote_connection.py:322: in _request<br/>    response = self._conn.request(method, url, body=body, headers=headers)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/_request_methods.py:144: in request<br/>    return self.request_encode_body(<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/_request_methods.py:279: in request_encode_body<br/>    return self.urlopen(method, url, **extra_kw)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/poolmanager.py:444: in urlopen<br/>    response = conn.urlopen(method, u.request_uri, **kw)<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/connectionpool.py:793: in urlopen<br/>    response = self._make_request(<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/connectionpool.py:537: in _make_request<br/>    response = conn.getresponse()<br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/urllib3/connection.py:466: in getresponse<br/>    httplib_response = super().getresponse()<br/>../../../anaconda3/envs/proj2/lib/python3.12/http/client.py:1423: in getresponse<br/>    response.begin()<br/>../../../anaconda3/envs/proj2/lib/python3.12/http/client.py:331: in begin<br/>    version, status, reason = self._read_status()<br/>../../../anaconda3/envs/proj2/lib/python3.12/http/client.py:292: in _read_status<br/>    line = str(self.fp.readline(_MAXLINE + 1), &quot;iso-8859-1&quot;)<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;socket.SocketIO object at 0x10675c0d0&gt;, b = &lt;memory at 0x106a6f400&gt;<br/><br/>    def readinto(self, b):<br/>        &quot;&quot;&quot;Read up to len(b) bytes into the writable buffer *b* and return<br/>        the number of bytes read.  If the socket is non-blocking and no bytes<br/>        are available, None is returned.<br/>    <br/>        If *b* is non-empty, a 0 return value indicates that the connection<br/>        was shutdown at the other end.<br/>        &quot;&quot;&quot;<br/>        self._checkClosed()<br/>        self._checkReadable()<br/>        if self._timeout_occurred:<br/>            raise OSError(&quot;cannot read from timed out object&quot;)<br/>        while True:<br/>            try:<br/>&gt;               return self._sock.recv_into(b)<br/><span class="error">E               KeyboardInterrupt</span><br/><br/>../../../anaconda3/envs/proj2/lib/python3.12/socket.py:707: KeyboardInterrupt<br/><br/>During handling of the above exception, another exception occurred:<br/><br/>self = &lt;TikTokScraper.TestTiktok testMethod=test_save_html_page&gt;<br/><br/>    def test_save_html_page(self):<br/>        &quot;&quot;&quot;<br/>        1. log in manually<br/>        2. traverse through the vids in the vid_list<br/>        3. where we scroll down once to get comments<br/>        4. save html file fo each vid<br/>        &quot;&quot;&quot;<br/>        current_time = datetime.now().strftime(&quot;%m-%d-%M&quot;)<br/>        target_folder = f&quot;{self.data.split(&#x27;.&#x27;)[0].split(&#x27;_&#x27;)[-1]}-{current_time}&quot;<br/>        os.mkdir(target_folder)<br/>    <br/>        self.open(&#x27;https://www.tiktok.com/&#x27;)<br/>        time.sleep(30) #manually log in<br/>        #self.click(&#x27;//*[@id=&quot;loginContainer&quot;]/div/div/div[3]/div/div[2]/div/div/div&#x27;)<br/>    <br/>        vid_list = []<br/>        vid_path = f&quot;./pre-processing/url-csv/{self.data}&quot;<br/>        with open(vid_path,&quot;r&quot;) as file:<br/>            reader = DictReader(file)<br/>            for row in reader:<br/>                vid_list.append(row[&#x27;Video URL&#x27;])<br/>    <br/>        print(f&quot;we have {len(vid_list)} videos&quot;)<br/>    <br/>        for i,vid in enumerate(vid_list):<br/>            time.sleep(5)<br/>            self.open(vid)<br/>            try:<br/>                self.scroll_to_bottom()<br/>                soup = self.get_beautiful_soup(source=None)<br/>    <br/>                if soup.find(id=&quot;tiktok-verify-ele&quot;):<br/>                    print(&quot;element exception!! Check if CAPTCHA appeared!!&quot;)<br/>                    time.sleep(15)<br/>                    self.open(vid)<br/>                    self.scroll_to_bottom()<br/>                    soup = self.get_beautiful_soup(source=None)<br/>    <br/>                with open(f&quot;{target_folder}/vid_{i}.html&quot;, &quot;w&quot;) as file:<br/>                    file.write(str(soup))<br/>            except:<br/>                #if page x load:<br/>                try:<br/>&gt;                   self.open(vid)<br/><br/>TikTokScraper.py:52: <br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/fixtures/base_case.py:217: in open<br/>    self._check_browser()<br/>_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ <br/><br/>self = &lt;TikTokScraper.TestTiktok testMethod=test_save_html_page&gt;<br/><br/>    def _check_browser(self):<br/>        &quot;&quot;&quot;This method raises an exception if the active window is closed.<br/>        (This provides a much cleaner exception message in this situation.)&quot;&quot;&quot;<br/>        active_window = None<br/>        try:<br/>            active_window = self.driver.current_window_handle  # Fails if None<br/>        except Exception:<br/>            pass<br/>        if not active_window:<br/>&gt;           raise NoSuchWindowException(&quot;Active window was already closed!&quot;)<br/><span class="error">E           selenium.common.exceptions.NoSuchWindowException: Message: Active window was already closed!</span><br/><br/>../../../anaconda3/envs/proj2/lib/python3.12/site-packages/seleniumbase/fixtures/base_case.py:8766: NoSuchWindowException<br/></div></td></tr></tbody></table></body></html>
