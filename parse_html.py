@@ -37,7 +37,7 @@ def extract_vid_info(video_file):
             pass
         username = safe_find(soup, "span", {"class": "css-1c7urt-SpanUniqueId evv7pft1"})
         nickname = safe_find(soup,"span", {"class": "css-1xccqfx-SpanNickName e17fzhrb1"})
-        description = safe_find(soup, "span", {"class": "css-j2a19r-SpanText efbd9f0"})
+        #description = safe_find(soup, "span", {"class": "css-j2a19r-SpanText efbd9f0"})
         music = safe_find(soup, "div", {"class": "css-pvx3oa-DivMusicText epjbyn3"})
         #print("username:", username,"\nnickname:", nickname, "\ndescription:", description,"\nmusic:",music)
         try:
@@ -47,6 +47,7 @@ def extract_vid_info(video_file):
         except:
             pass
         if data:
+            description = safe_dict_find(data,'desc')
             location_created = safe_dict_find(data,'locationCreated')
             suggested_words = safe_dict_find(data,'suggestedWords')
             video_duration = safe_dict_find(data['video'],'duration')
