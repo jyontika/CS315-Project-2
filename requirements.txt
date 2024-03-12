@@ -3,8 +3,10 @@ browser-cookie3==0.19.1
 bs4==0.0.2
 certifi==2024.2.2
 charset-normalizer==3.3.2
+flatdict==4.0.1
 idna==3.6
 lz4==4.3.3
+matplotlib==3.8.3
 numpy==1.26.4
 pandas==2.2.1
 pycryptodomex==3.20.0
