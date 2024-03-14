@@ -347,8 +347,8 @@ def save_tiktok(video_url,
         print("Saved metadata for video\n",video_url,"\nto\n",os.getcwd())
 
 def save_tiktok_multi_page(tiktok_url, #can be a user, hashtag, or music URL
-                           save_video=False,
-                           save_metadata=True,
+                           save_video=True,
+                           save_metadata=False,
                            metadata_fn='',
                            browser_name=None):
     if 'cookies' not in globals() and browser_name is None:
@@ -371,7 +371,7 @@ def save_tiktok_multi_page(tiktok_url, #can be a user, hashtag, or music URL
     print('Saved',len(data_loc),'videos and/or lines of metadata')
 
 def save_tiktok_multi_urls(video_urls,
-                           save_video=True,
+                           save_video=False,
                            metadata_fn='',
                            sleep=4,
                            browser_name=None):
