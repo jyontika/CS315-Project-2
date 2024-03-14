@@ -1,4 +1,5 @@
-"""Script for Step 5:
+"""
+Script for Step 5:
 Once you have done all of these in the notebook, create a Python script 
 that can be called with a date (from a TikTok video). First, the script 
 looks whether a CSV with cleaned articles is in our folder. 
@@ -6,7 +7,12 @@ If not, calls first the API function to get the articles and
 then the function that converts them into a CSV. 
 Then, it loads the CSV into a dataframe and it uses filtering to get the articles 
 for the desired date. These articles will be used for the Semantic Similarity 
-portion of the TikTok Project."""
+portion of the TikTok Project.
+
+Called in description-suggested-words-analysis.ipynb
+
+Author: Audrey Yip (with help from Tayae Rogers)
+"""
 
 import os
 import pandas as pd
@@ -34,12 +40,12 @@ def get_articles(date):
         return
     else:
         # extract the articles from the response JSON corresponding to date
-        articles = response.json()['response']['docs']
-        article_list = [article for article in articles if article['pub_date'][:10] == date]
-        num_articles = len(article_list)
+        article_list = response.json()['response']['docs']
+        #article_list = [article for article in articles if article['pub_date'][:10] == date]
+        #num_articles = len(article_list)
         
         print(f"Successfully got articles for {date}!")
-        print(f"Number of articles: {num_articles} \n")
+        #print(f"Number of articles: {num_articles} \n")
         return article_list
 
 def flat_dictionary(article):
@@ -85,7 +91,7 @@ def articles_to_csv(date):
     df = pd.DataFrame(article_data)
     cwd = os.getcwd()
     nyt_dir = (f'{cwd}/../pre-processing/nyt-articles')
-    df.to_csv(f"{nyt_dir}/NYT_articles_{date}.csv")
+    df.to_csv(f"{nyt_dir}/NYT_articles_{date[:7]}.csv")
 
 def filter_by_date(date):
     """
@@ -93,19 +99,20 @@ def filter_by_date(date):
     Calls function articles_to_csv if articles for that date are not in folder already
     """
     cwd = os.getcwd()
-    print("Current working directory:", cwd)
+    #print("Current working directory:", cwd)
     nyt_dir = (f'{cwd}/../pre-processing/nyt-articles')
-    
-    print("NYT directory:", nyt_dir)
+    #print("NYT directory:", nyt_dir)
 
-    file_name = f"NYT_articles_{date}.csv"
+    file_name = f"NYT_articles_{date[:7]}.csv"
     files_in_dir = set(os.listdir(nyt_dir))
     if file_name not in files_in_dir:
-        print(f'NYT data for {date} not in folder, creating .csv now')
+        print(f'NYT data for {date} not in folder, creating .csv now\n')
         articles_to_csv(date)
         time.sleep(1)
     else:
-        print(f'NYT data for {date} already in folder')
+        print(f'NYT data for {date} already in folder\n')
 
-    article_df = pd.read_csv(f"{nyt_dir}/NYT_articles_{date}.csv")
+    article_df = pd.read_csv(f"{nyt_dir}/NYT_articles_{date[:7]}.csv")
+    article_df = article_df[article_df['pub_date'].str[:10] == date]
+
     return article_df
