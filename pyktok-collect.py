@@ -15,7 +15,6 @@ def collect_metadata(inputFile, outputFile):
     
     try:
         urls = [entry['Link'] for entry in data]
-        print(urls)
     except:
         print("There is something wrong with the data format.")
         return
