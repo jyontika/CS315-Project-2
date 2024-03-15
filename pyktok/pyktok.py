@@ -307,9 +307,12 @@ def save_tiktok(video_url,
             except:
                 print("timed out, moving on to next vid..")
                 locate_el = False
-        if save_video == True and tt_video:
-            with open(video_fn, 'wb') as fn:
-                fn.write(tt_video.content)
+        if save_video == True:
+            if tt_video:
+                with open(video_fn, 'wb') as fn:
+                    fn.write(tt_video.content)
+            else:
+                locate_el = False
 
         if metadata_fn != '':
             try:
