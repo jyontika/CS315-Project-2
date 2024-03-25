@@ -18,8 +18,9 @@ import os
 import pandas as pd
 import time
 import requests
+from datetime import datetime, timedelta
 
-API_key = 'CvRk9Qjp9rbVhKThEcRSAphBVJYU5SDT'
+API_key = 'dAgeA3Jd143Ih1V0Nc7ljDmJwWyo7C6A'
 
 def get_articles(date):
     year, month, _ = date.split('-')
@@ -116,3 +117,22 @@ def filter_by_date(date):
     article_df = article_df[article_df['pub_date'].str[:10] == date]
 
     return article_df
+
+def filter_by_week(date):
+    """
+    Given a date, outputs a df with all the articles published on that date or in the week prior
+    Calls function articles_to_csv if articles for that date are not in folder already
+    """
+    cwd = os.getcwd()
+    nyt_dir = (f'{cwd}/../pre-processing/nyt-articles')
+
+    week_article_df = pd.DataFrame()
+    datetime_date = datetime.strptime(date)
+
+    for count in range(-3,4):
+        temp_date = (datetime_date-timedelta(count)).strftime('%Y-%m-%d')
+        week_article_df = pd.concat([week_article_df, filter_by_date(temp_date)])
+
+    week_article_df = pd.read_csv(f"{nyt_dir}/NYT_articles_{date[:7]}_week.csv")
+
+    return week_article_df
