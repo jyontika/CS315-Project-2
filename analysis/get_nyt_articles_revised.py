@@ -127,12 +127,10 @@ def filter_by_week(date):
     nyt_dir = (f'{cwd}/../pre-processing/nyt-articles')
 
     week_article_df = pd.DataFrame()
-    datetime_date = datetime.strptime(date)
+    datetime_date = datetime.strptime(date, "%Y-%m-%d")
 
     for count in range(-3,4):
         temp_date = (datetime_date-timedelta(count)).strftime('%Y-%m-%d')
         week_article_df = pd.concat([week_article_df, filter_by_date(temp_date)])
-
-    week_article_df = pd.read_csv(f"{nyt_dir}/NYT_articles_{date[:7]}_week.csv")
 
     return week_article_df
