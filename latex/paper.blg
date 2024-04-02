@@ -1,0 +1,49 @@
+This is BibTeX, Version 0.99d (TeX Live 2023)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper.aux
+The style file: plain.bst
+Database file #1: paperbib.bib
+Warning--entry type for "pewresearch2023" isn't style-file defined
+--line 2 of file paperbib.bib
+You've used 12 entries,
+            2118 wiz_defined-function locations,
+            568 strings with 6317 characters,
+and the built_in function-call counts, 4138 in all, are:
+= -- 417
+> -- 182
+< -- 3
++ -- 74
+- -- 60
+* -- 277
+:= -- 677
+add.period$ -- 37
+call.type$ -- 12
+change.case$ -- 66
+chr.to.int$ -- 0
+cite$ -- 12
+duplicate$ -- 155
+empty$ -- 332
+format.name$ -- 60
+if$ -- 875
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 10
+newline$ -- 62
+num.names$ -- 24
+pop$ -- 75
+preamble$ -- 1
+purify$ -- 54
+quote$ -- 0
+skip$ -- 115
+stack$ -- 0
+substring$ -- 270
+swap$ -- 37
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 48
+warning$ -- 0
+while$ -- 43
+width$ -- 14
+write$ -- 131
+(There was 1 warning)
