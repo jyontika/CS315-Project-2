@@ -5,45 +5,45 @@ The style file: plain.bst
 Database file #1: paperbib.bib
 Warning--entry type for "pewresearch2023" isn't style-file defined
 --line 2 of file paperbib.bib
-You've used 12 entries,
+You've used 13 entries,
             2118 wiz_defined-function locations,
-            568 strings with 6317 characters,
-and the built_in function-call counts, 4138 in all, are:
-= -- 417
-> -- 182
+            572 strings with 6427 characters,
+and the built_in function-call counts, 4346 in all, are:
+= -- 437
+> -- 189
 < -- 3
-+ -- 74
-- -- 60
-* -- 277
-:= -- 677
-add.period$ -- 37
-call.type$ -- 12
-change.case$ -- 66
++ -- 77
+- -- 62
+* -- 283
+:= -- 712
+add.period$ -- 40
+call.type$ -- 13
+change.case$ -- 70
 chr.to.int$ -- 0
-cite$ -- 12
-duplicate$ -- 155
-empty$ -- 332
-format.name$ -- 60
-if$ -- 875
+cite$ -- 13
+duplicate$ -- 162
+empty$ -- 354
+format.name$ -- 62
+if$ -- 921
 int.to.chr$ -- 0
-int.to.str$ -- 12
+int.to.str$ -- 13
 missing$ -- 10
-newline$ -- 62
-num.names$ -- 24
-pop$ -- 75
+newline$ -- 67
+num.names$ -- 26
+pop$ -- 83
 preamble$ -- 1
-purify$ -- 54
+purify$ -- 57
 quote$ -- 0
-skip$ -- 115
+skip$ -- 122
 stack$ -- 0
-substring$ -- 270
-swap$ -- 37
+substring$ -- 275
+swap$ -- 38
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 48
+type$ -- 52
 warning$ -- 0
-while$ -- 43
-width$ -- 14
-write$ -- 131
+while$ -- 45
+width$ -- 15
+write$ -- 141
 (There was 1 warning)

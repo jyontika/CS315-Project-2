@@ -1,14 +1,14 @@
 # Fdb version 4
-["bibtex paper"] 1712027721 "paper.aux" "paper.bbl" "paper" 1712027900 0
-  "./paperbib.bib" 1712021553 3771 eef64e428e598985ea6bf31e179476d6 ""
+["bibtex paper"] 1712065324 "paper.aux" "paper.bbl" "paper" 1712065325 0
+  "./paperbib.bib" 1712065304 3960 3920027ab96f3afec68a30e68f0310c7 ""
   "/usr/local/texlive/2023/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "paper.aux" 1712027899 6690 8a4d314caa43e0a11c718a0f2475f04a "pdflatex"
+  "paper.aux" 1712065325 6741 f9d2efb135e87f7a77114b7fbebf7fde "pdflatex"
   (generated)
   "paper.bbl"
   "paper.blg"
   (rewritten before read)
-["pdflatex"] 1712027894 "/Users/jyontika/Documents/GitHub/CS315-Project-2/latex/paper.tex" "paper.pdf" "paper" 1712027900 0
-  "/Users/jyontika/Documents/GitHub/CS315-Project-2/latex/paper.tex" 1712027894 27502 0379ff52ce75b1a12ccc745875c06fb5 ""
+["pdflatex"] 1712065324 "/Users/jyontika/Documents/GitHub/CS315-Project-2/latex/paper.tex" "paper.pdf" "paper" 1712065325 0
+  "/Users/jyontika/Documents/GitHub/CS315-Project-2/latex/paper.tex" 1712065321 27522 3900f38b83fbf16ad3d74f6ebc8c694b ""
   "/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2023/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -106,11 +106,11 @@
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
   "cluster.png" 1712021721 336265 d57300f4d32d41007546e27ec5d99b53 ""
   "flowchart.png" 1712021663 595916 d4782df5b66bcb3879f7ae264a86cbc1 ""
-  "paper.aux" 1712027899 6690 8a4d314caa43e0a11c718a0f2475f04a "pdflatex"
-  "paper.bbl" 1712027722 2939 f8ff6b516298eed92c4dbe6c1d9230ab "bibtex paper"
-  "paper.out" 1712027899 3054 232461d029371fec3e74e0c5d233e691 "pdflatex"
-  "paper.tex" 1712027894 27502 0379ff52ce75b1a12ccc745875c06fb5 ""
-  "paper.toc" 1712027899 1490 fb735fbb1979fa772389a5fadb79edf2 "pdflatex"
+  "paper.aux" 1712065325 6741 f9d2efb135e87f7a77114b7fbebf7fde "pdflatex"
+  "paper.bbl" 1712065324 3093 bc49f44821d9f26e03e7eb87c79196ba "bibtex paper"
+  "paper.out" 1712065325 3054 232461d029371fec3e74e0c5d233e691 "pdflatex"
+  "paper.tex" 1712065321 27522 3900f38b83fbf16ad3d74f6ebc8c694b ""
+  "paper.toc" 1712065325 1490 fb735fbb1979fa772389a5fadb79edf2 "pdflatex"
   "transcription.png" 1712021707 248056 805d3bcce9f89d536706b0315f4aad6e ""
   (generated)
   "paper.aux"

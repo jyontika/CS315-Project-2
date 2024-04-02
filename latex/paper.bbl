@@ -44,6 +44,11 @@ Daniel Klug, Yiqing Qin, Michael Evans, and Geoffrey Kaufman.
 K.~E. Matsa.
 \newblock More americans are getting news on tiktok, bucking the trend seen on most other social media sites, November 15 2023.
 
+\bibitem{whisper_repo}
+OpenAI.
+\newblock {Whisper: Towards Self-supervised Speech Recognition}.
+\newblock \url{https://github.com/openai/whisper}, 2024.
+
 \bibitem{reiss2023dissecting}
 Markus~V Reiss.
 \newblock Dissecting non-use of online news: Systematic evidence from combining tracking and automated text classification.
