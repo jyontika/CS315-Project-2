@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.11)  1 APR 2024 23:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.11)  1 APR 2024 23:18
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -495,16 +495,25 @@ Underfull \hbox (badness 10000) in paragraph at lines 128--129
  []
 
 [6]
+Underfull \hbox (badness 10000) in paragraph at lines 130--131
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 133--134
+
+ []
+
+
 Underfull \hbox (badness 10000) in paragraph at lines 136--137
 
  []
 
-
+[7]
 Underfull \hbox (badness 10000) in paragraph at lines 139--140
 
  []
 
-[7]
 <transcription.png, id=167, 880.28876pt x 466.74374pt>
 File: transcription.png Graphic file (type png)
 <use transcription.png>
@@ -516,7 +525,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 151--152
  []
 
 [8 <./transcription.png>]
-<cluster.png, id=177, 954.56625pt x 448.67625pt>
+<cluster.png, id=176, 954.56625pt x 448.67625pt>
 File: cluster.png Graphic file (type png)
 <use cluster.png>
 Package pdftex.def Info: cluster.png  used on input line 156.
@@ -556,12 +565,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 178--185
 
  []
 
-
+[11]
 Underfull \hbox (badness 10000) in paragraph at lines 186--187
 
  []
 
-[11]
+
 Underfull \hbox (badness 10000) in paragraph at lines 189--190
 
  []
@@ -664,7 +673,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,12n,77p,1047b,466s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on paper.pdf (16 pages, 1026964 bytes).
+Output written on paper.pdf (16 pages, 1026799 bytes).
 PDF statistics:
  272 PDF objects out of 1000 (max. 8388607)
  227 compressed objects within 3 object streams

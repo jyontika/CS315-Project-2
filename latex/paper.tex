@@ -27,10 +27,10 @@
     Audrey Ming Wai Yip \\
     Jenni Yu \\
     \vspace{2em} % add some vertical space between author and affiliation
-    CS315-02, Group 3 \\
-    29 March 2024
 }
-
+\date{CS315-02, Group 3 \\
+29 March 2024
+}
 
 \linespread{1.5}
 
@@ -127,10 +127,10 @@ From the transcribed videos, transcripts in languages other than English were ex
 
 {\noindent}Then, the remaining 227 transcriptions were compared with NYT headlines, abstracts, and lead paragraphs to assess the effectiveness of the filtering methods. Similar to the filtering step, this comparison used cosine similarity of Universal Sentence Encoder embeddings, with no pre-processing applied to either the video transcription or article headline.\newline
 
-{\noindent}Additionally, considering the computational expense of comparing full transcripts to entire headlines, abstracts, and lead paragraphs, we sought to determine if this approach would outperform comparing keyword fields. Hence, we constructed keyword fields for the NYT articles, as detailed in Section~\ref{subsec:headline}. Similarly, we created transcription keywords by eliminating stopwords and punctuation. Subsequently, we calculated the cosine similarity between the Universal Sentence Encoders of the cleaned transcription and NYT keyword and headline data.
+{\noindent}Additionally, considering the computational expense of comparing full transcripts to entire headlines, abstracts, and lead paragraphs, we sought to determine if this approach would outperform comparing keyword fields. Hence, we constructed keyword fields for the NYT articles, as detailed in Section~\ref{subsec:headline}. Similarly, we created transcription keywords by eliminating stopwords and punctuation. Subsequently, we calculated the cosine similarity between the Universal Sentence Encoders of the cleaned transcription and NYT keyword and headline data. \newline
 
 \subsection{Qualitative Analysis}
-To validate the findings regarding news-related videos identified through cosine similarity, a qualitative examination was conducted on those with the highest cosine scores. The definition of news for this analysis encompassed videos reporting or commenting on current events. Each video underwent manual analysis by three individuals, who categorized them as 'Yes,' 'No,' or 'Maybe' based on the aforementioned definition. In cases of conflicting categorizations, discussions were held to reach a consensus. Additionally, a subset of news videos pertaining to the events in Israel-Palestine were identified.
+To validate the findings regarding news-related videos identified through cosine similarity, a qualitative examination was conducted on those with the highest cosine scores. The definition of news for this analysis encompassed videos reporting or commenting on current events. Each video underwent manual analysis by three individuals, who categorized them as 'Yes,' 'No,' or 'Maybe' based on the aforementioned definition. In cases of conflicting categorizations, discussions were held to reach a consensus. Additionally, a subset of news videos pertaining to the events in Israel-Palestine were identified.\newline
 
 \section{Results}
 Recall that our primary research questions revolved around the identification of news on TikTok, the types of news showcased on the platform from October 7, 2023, to December 7, 2023, and the extent of its presence. Out of our original dataset comprising 24,915 videos, we pinpointed 834 unique videos as news-related through our three filtering methods. Subsequently, we analyzed this dataset using three approaches: (i) cosine similarity between transcripts and The New York Times, (ii) clustering, and (iii) qualitative analysis of transcripts. \newline
